@@ -24,4 +24,12 @@ Steps For Deployment:
 
 * finally run this to up the container : `cd docker && docker-compose up`
 * Now you can open `0.0.0.0:8000` in your browser and check api 
+    In This Api :
+    * if date is not given as request parameter:  this message will appear  - `Please provide a date in request parameter` with a status code 400
+
+    * if date is greater than today's date : the message will appear - `Please provide a date which not greater than today (utc)" ` with status code 400
+
+    * If data is not available for given date: this message will appear - `Sorry No Record Found For This Date!!!` with status code 404.
+
+    * else it will show the paginated response with status code 200
 
