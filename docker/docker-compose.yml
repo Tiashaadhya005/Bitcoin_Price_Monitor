@@ -1,0 +1,65 @@
+version: "3.3"
+services:
+  bit_coin_app:
+    image: bitcoin_check_image1
+    command: "python3 manage.py runserver 0.0.0.0:8000"
+    links:
+      - sqlite
+      - redis
+    ports:
+      - "8000:8000"
+      # - "22"
+    
+    volumes:
+      - /opt/:/opt/
+
+   
+  sqlite:
+    image: keinos/sqlite3:latest
+    command: sqlite3
+    ports:
+        - "5432"
+    volumes:
+        - sqlite_data:/var/lib/sqlite/data
+
+  redis:
+    image: redis:4.0.2
+    command: redis-server
+    ports:
+        - "6379"
+    volumes:
+        - redis_data:/data
+
+  celery_worker:
+    build: 
+      context: .
+    image: bitcoin_check_image1
+    
+    command: "python -m celery -A crypto_monitor_app worker -l info"
+    links:
+      - redis
+    
+    volumes:
+      - /opt/:/opt/
+
+  celery_beat:
+    build: 
+      context: .
+    image: bitcoin_check_image1
+    
+    command: "python -m celery -A crypto_monitor_app beat -l info"
+    links:
+      - redis
+    
+    volumes:
+      - /opt/:/opt/
+
+  
+volumes:
+  sqlite_data:
+    driver: local
+    # volume: db_data:/home
+  redis_data:
+    driver: local
+    # volume: redis_data:/home
+#external: true
