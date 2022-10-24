@@ -16,3 +16,5 @@ recipient_list = [
 
 DEFAULT_MAX = 2000
 DEFAULT_MIN = 1000
+
+DEFAULT_START_TIME = 5

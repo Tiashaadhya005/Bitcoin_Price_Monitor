@@ -5,6 +5,7 @@ from celery import Celery
 from celery.schedules import crontab
 import celery
 from time import sleep
+from crypto_monitor_app.configurations import DEFAULT_START_TIME
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "crypto_monitor_app.settings")
@@ -18,7 +19,7 @@ app.autodiscover_tasks()
 processing_date=datetime.utcnow()
 hour=processing_date.hour
 #start after 5 min of container start
-minute = (processing_date+timedelta(minutes=5)).minute
+minute = (processing_date+timedelta(minutes=DEFAULT_START_TIME)).minute
 weekday= processing_date.weekday()
 day = processing_date.day
 month=processing_date.month
